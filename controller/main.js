@@ -1,6 +1,5 @@
 
 var dsnv = new DanhSachNV();
-var arrDSNV = dsnv.arrayNV;
 getLocalStorageData();
 function domID(id) {
     return document.getElementById(id);
@@ -24,33 +23,37 @@ function layThongTinNV () {
 domID('btnThemNV').onclick = function (e) {
     var nv = layThongTinNV();
     dsnv.addNV(nv); 
-    render(arrDSNV);
+    render(dsnv.arrayNV);
     setLocalStorageData();
 };
 
 
 function render(data) {
-    content = '';
-    for (var i = 0; i < data.length; i++) {
-        var nhanvien = data[i];
-        content += `
-        <tr>
-            <td>${nhanvien.taiKhoanNV}</td>
-            <td>${nhanvien.tenNV}</td>
-            <td>${nhanvien.email}</td>
-            <td>${nhanvien.day}</td>
-            <td>${nhanvien.level}</td>
-            <td>${nhanvien.sumSalary}</td>
-            <td>${nhanvien.xepLoai}</td>
-            <td><button class="btn btn-outline-danger" onclick="deleteNhanVien('${nhanvien.taiKhoanNV}')">Delete</button></td>
-        </tr>
-        `;
-        domID('tableDanhSach').innerHTML = content;
+    if ( data.length !== 0 ) {
+        content = '';
+        for (var i = 0; i < data.length; i++) {
+            var nhanvien = data[i];
+            content += `
+            <tr>
+                <td>${nhanvien.taiKhoanNV}</td>
+                <td>${nhanvien.tenNV}</td>
+                <td>${nhanvien.email}</td>
+                <td>${nhanvien.day}</td>
+                <td>${nhanvien.level}</td>
+                <td>${nhanvien.sumSalary}</td>
+                <td>${nhanvien.xepLoai}</td>
+                <td><button class="btn btn-outline-danger" onclick="deleteNhanVien('${nhanvien.taiKhoanNV}')">Delete</button></td>
+            </tr>
+            `;
+            domID('tableDanhSach').innerHTML = content;
+        };
+    } else {
+        domID('tableDanhSach').innerHTML = '';
     };
 };
 
 function setLocalStorageData() {
-    localStorage.setItem('DSNV',JSON.stringify(arrDSNV));
+    localStorage.setItem('DSNV',JSON.stringify(dsnv.arrayNV));
 };
 
 function getLocalStorageData() {
@@ -64,4 +67,5 @@ function getLocalStorageData() {
 function deleteNhanVien(taiKhoanNV) { 
     dsnv.deleteNV(taiKhoanNV);
     render(dsnv.arrayNV);
+    setLocalStorageData();
 };

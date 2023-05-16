@@ -16,10 +16,8 @@ function DanhSachNV() {
     };
     this.deleteNV = function (taiKhoanNV) {
         var index = this.timViTri(taiKhoanNV);
-        for (var i = 0; i < this.arrayNV.length; i++) {
-            if ( index == i ) {
-                this.arrayNV.splice(index,1);
-            };
+        if (index !== -1) {
+            this.arrayNV.splice(index, 1);
         };
     };
 };
