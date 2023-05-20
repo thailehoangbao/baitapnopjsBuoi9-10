@@ -12,11 +12,11 @@ function NhanVien(taiKhoanNV,tenNV,email,matKhau,day,luong,level,timeWork) {
 
     this.tinhSalary = function () {
         if (this.level == 'Sếp') {
-            return this.sumSalary = Number(this.luong) * Number(this.timeWork) * 3;
+            return this.sumSalary = Number(this.luong) * 3;
         } else if (this.level == 'Trưởng phòng') {
-            return this.sumSalary = Number(this.luong) * Number(this.timeWork) * 2;
+            return this.sumSalary = Number(this.luong) * 2;
         } else if (this.level == 'Nhân viên') {
-            return this.sumSalary = Number(this.luong) * Number(this.timeWork) * 1;
+            return this.sumSalary = Number(this.luong) * 1;
         };
     };
     this.xepLoai = function () {
