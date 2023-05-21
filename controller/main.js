@@ -145,6 +145,7 @@ function editNhanVien(taiKhoanNV) {
 domID('btnCapNhat').addEventListener('click', function(e){
     e.preventDefault();
 
+    domID('tknv').disabled = false;
     var nv = layThongTinNV(false);
     dsnv.updateNV(nv);
     render(dsnv.arrayNV);
@@ -153,4 +154,6 @@ domID('btnCapNhat').addEventListener('click', function(e){
 
 domID('btnThem').addEventListener('click', function(e){
     domID('btnThemNV').style.display = 'inline-block';
+
+    domID('formNV').reset();
 })
