@@ -1,30 +1,39 @@
-function NhanVien(taiKhoanNV,tenNV,email,matKhau,day,luong,level,timeWork) {
+function NhanVien(taiKhoanNV, tenNV, email, matKhau, day, luong, level, timeWork) {
     this.taiKhoanNV = taiKhoanNV;
     this.tenNV = tenNV;
     this.email = email;
     this.matKhau = matKhau;
     this.day = day;
     this.luong = luong;
-    this.level = level ;
+    this.level = level;
     this.timeWork = timeWork;
     this.sumSalary = 0;
-    this.xepLoai  = '';
+    this.xepLoai = '';
 
     this.tinhSalary = function () {
         if (this.level == 'Sếp') {
-            return this.sumSalary = Number(this.luong) * 3;
+            return this.sumSalary = (Number(this.luong) * 3).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
         } else if (this.level == 'Trưởng phòng') {
-            return this.sumSalary = Number(this.luong) * 2;
+            return this.sumSalary = (Number(this.luong) * 2).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
         } else if (this.level == 'Nhân viên') {
-            return this.sumSalary = Number(this.luong) * 1;
+            return this.sumSalary = (Number(this.luong) * 1).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
         };
     };
     this.xepLoai = function () {
-        if ( Number(this.timeWork) >= 192 ) {
+        if (Number(this.timeWork) >= 192) {
             return this.xepLoai = 'Nhân Viên Xuất Sắc';
-        } else if ( (Number(this.timeWork) >= 176) & (Number(this.timeWork) < 192) ) {
+        } else if ((Number(this.timeWork) >= 176) & (Number(this.timeWork) < 192)) {
             return this.xepLoai = 'Nhân Viên Giỏi';
-        } else if ( (Number(this.timeWork) >= 160) & (Number(this.timeWork) < 176) ) {
+        } else if ((Number(this.timeWork) >= 160) & (Number(this.timeWork) < 176)) {
             return this.xepLoai = 'Nhân Viên Khá';
         } else {
             return this.xepLoai = 'Nhân Viên Trung Bình';

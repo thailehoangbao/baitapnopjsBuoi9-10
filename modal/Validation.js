@@ -97,4 +97,28 @@ function Validation() {
         domID(errorId).innerHTML = mess;
         return false;
     };
+
+    this.kiemTraMaNVTonTai = function ( value, errorId, mess, arr) {
+        var exist = false;
+
+        for (var i = 0; i < arr.length; i++) { 
+            var nv = arr[i];
+            if(nv.taiKhoanNV === value ) {
+                exist = true;
+                break;
+            };
+        };
+
+        if(exist) {
+            //false
+            domID(errorId).style.display = 'block';
+            domID(errorId).innerHTML = mess;
+            return false;
+        };
+
+        //true
+        domID(errorId).style.display = 'none';
+        domID(errorId).innerHTML = '';
+        return true;
+    };
 };

@@ -6,7 +6,7 @@ function domID(id) {
     return document.getElementById(id);
 };
 
-function layThongTinNV () {
+function layThongTinNV (isUpdate) {
     var taiKhoanNV = domID('tknv').value;
     var tenNV = domID('name').value;
     var email = domID('email').value;
@@ -17,10 +17,14 @@ function layThongTinNV () {
     var timeWork = domID('gioLam').value;
 
     var isValid = true;
-    //Test Tài Khoản
-    isValid &= validation.kiemTraRong(taiKhoanNV,"tbTKNV","(*)Vui lòng nhập trường này!")
-    && validation.kiemTraPattern(taiKhoanNV,/^[0-9]+$/,"tbTKNV","(*)Trường này phải là kí số")
-    && validation.kiemTraDoDaiKiTu(taiKhoanNV,"tbTKNV","(*)Vui lòng nhập từ 4-6 kí số!",4,6);
+
+    if (isUpdate) {
+        //Test Tài Khoản
+        isValid &= validation.kiemTraRong(taiKhoanNV,"tbTKNV","(*)Vui lòng nhập trường này!")
+        && validation.kiemTraPattern(taiKhoanNV,/^[0-9]+$/,"tbTKNV","(*)Trường này phải là kí số")
+        && validation.kiemTraDoDaiKiTu(taiKhoanNV,"tbTKNV","(*)Vui lòng nhập từ 4-6 kí số!",4,6)
+        && validation.kiemTraMaNVTonTai(taiKhoanNV,"tbTKNV","(*)Tài Khoảng đã tồn tại!",dsnv.arrayNV);
+    };
     //Test Họ và Tên
     isValid &= validation.kiemTraRong(tenNV,"tbTen","(*)Vui lòng nhập trường này!")
     && validation.kiemTraChuoiKiTu(tenNV,"tbTen","(*)Trường này phải là kí tự chữ!")
@@ -56,7 +60,7 @@ function layThongTinNV () {
 domID('btnThemNV').onclick = function (e) {
     e.preventDefault();
 
-    var nv = layThongTinNV();
+    var nv = layThongTinNV(true);
     if (nv) {
         dsnv.addNV(nv); 
         render(dsnv.arrayNV);
@@ -79,7 +83,10 @@ function render(data) {
                 <td>${nhanvien.level}</td>
                 <td>${nhanvien.sumSalary}</td>
                 <td>${nhanvien.xepLoai}</td>
-                <td><button class="btn btn-outline-danger" onclick="deleteNhanVien('${nhanvien.taiKhoanNV}')">Delete</button></td>
+                <td>
+                <button class="btn btn-outline-danger" onclick="deleteNhanVien('${nhanvien.taiKhoanNV}')">Delete</button>
+                <button class="btn btn-outline-success mt-3" onclick="editNhanVien('${nhanvien.taiKhoanNV}')" data-target="#myModal" data-toggle="modal">Update</button>
+                </td>
             </tr>
             `;
             domID('tableDanhSach').innerHTML = content;
@@ -106,3 +113,44 @@ function deleteNhanVien(taiKhoanNV) {
     render(dsnv.arrayNV);
     setLocalStorageData();
 };
+
+
+domID('searchName').addEventListener('keyup', function (e) {
+    var keyWord = domID('searchName').value;
+    var mangTimKiem = dsnv.searchLoaiNV(keyWord);
+    if (mangTimKiem.length !== 0 ) {
+    render(mangTimKiem);
+    } else {
+        render(dsnv.arrayNV);
+    };
+});
+
+function editNhanVien(taiKhoanNV) {
+    domID("myModal").style.display = "block";
+    var nv = dsnv.layThongTinNV(taiKhoanNV);
+    if(nv) {
+        domID('tknv').value = nv.taiKhoanNV;
+        domID('tknv').disabled = true;
+        domID('name').value = nv.tenNV;
+        domID('email').value = nv.email;
+        domID('password').value = nv.matKhau;
+        domID('datepicker').value = nv.day;
+        domID('luongCB').value = nv.luong;
+        domID('chucvu').value = nv.level;
+        domID('gioLam').value = nv.timeWork;
+    };
+    domID('btnThemNV').style.display = 'none';
+};
+
+domID('btnCapNhat').addEventListener('click', function(e){
+    e.preventDefault();
+
+    var nv = layThongTinNV(false);
+    dsnv.updateNV(nv);
+    render(dsnv.arrayNV);
+    setLocalStorageData();
+});
+
+domID('btnThem').addEventListener('click', function(e){
+    domID('btnThemNV').style.display = 'inline-block';
+})
